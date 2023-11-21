@@ -1,0 +1,25 @@
+name: Custom Docker Image Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  custom-image-job:
+    runs-on: ubuntu-latest
+    container:
+      image: mono:latest
+      options: --user=root
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Run Command in Custom Docker Image
+      run: |
+        # Commands to run in your custom Docker image
+        nuget restore Web-Series-API--ASP.NET.sln
+        mkdir _build
+        msbuild Web-Series-API--ASP.NET.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="../_build"
+        # Add more commands as needed
