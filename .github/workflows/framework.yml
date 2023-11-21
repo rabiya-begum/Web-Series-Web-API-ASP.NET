@@ -15,12 +15,12 @@ jobs:
 
     - name: Setup .NET Framework
       uses: microsoft/setup-msbuild@v1
-      
-    - name: Set NuGet Environment Variable
-      run: echo "NUGET=C:\\hostedtoolcache\\windows\\nuget.exe\\6.8.0\\x64\\nuget.exe" >> $GITHUB_ENV
 
     - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.2
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-version: ${{ matrix.nuget }}
+    - run: nuget restore Web-Series-API--ASP.NET.sln
       
     - name: Navigate to Workspace
       run: cd $GITHUB_WORKSPACE
